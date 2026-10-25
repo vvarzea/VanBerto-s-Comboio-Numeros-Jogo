@@ -2345,13 +2345,25 @@ function drawBalloon(b,alpha){
   const g=ctx.createRadialGradient(x-r*0.38,y-r*0.38,r*0.03,x+r*0.1,y+r*0.15,r*1.1);g.addColorStop(0,'rgba(255,255,255,0.85)');g.addColorStop(0.18,color.h);g.addColorStop(0.65,color.mid||color.h);g.addColorStop(1,color.dark);ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=S(1.5);ctx.stroke();
   // Número grande ao centro
   ctx.save();
-  ctx.font=`900 ${Math.min(r*1.05,S(34))}px Fredoka One,cursive`;
+  ctx.font=`900 ${Math.min(r*0.85,S(30))}px Fredoka One,cursive`;
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.lineJoin='round';ctx.lineWidth=S(3.5);ctx.strokeStyle=color.dark;ctx.strokeText(color.name,x,y-r*0.04);
+  ctx.lineJoin='round';ctx.lineWidth=S(3.5);ctx.strokeStyle=color.dark;ctx.strokeText(color.name,x,y-r*0.20);
   ctx.fillStyle='rgba(255,255,255,0.98)';
   ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=S(5);
-  ctx.fillText(color.name,x,y-r*0.04);
+  ctx.fillText(color.name,x,y-r*0.20);
   ctx.restore();
+  // Número por extenso em baixo
+  if(color.word){
+    ctx.save();
+    const wfs=fitText(color.word,r*1.25,S(10),S(6));
+    ctx.font=`900 ${wfs}px Fredoka One,cursive`;
+    const wW=ctx.measureText(color.word).width+S(8),wH=wfs+S(4),wY=y+r*0.34;
+    rrFill(x-wW/2,wY,wW,wH,S(3),'rgba(0,0,0,0.45)');
+    ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=S(3);
+    ctx.fillText(color.word,x,wY+wH/2);
+    ctx.restore();
+  }
   // Fio
   ctx.beginPath();ctx.arc(x,y+r,S(5),0,Math.PI*2);ctx.fillStyle=color.dark;ctx.fill();
   ctx.beginPath();ctx.moveTo(x,y+r+S(5));ctx.bezierCurveTo(x+Math.sin(b.sway)*S(16),y+r+S(16),x+Math.sin(b.sway+1.2)*S(12),y+r+S(28),x+Math.sin(b.sway+0.6)*S(9),y+r+S(42));ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=S(1.4);ctx.lineCap='round';ctx.stroke();
